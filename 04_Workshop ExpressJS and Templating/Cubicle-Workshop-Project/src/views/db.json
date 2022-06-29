@@ -49,5 +49,12 @@
         "description": "Another one",
         "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/61izOzq%2BBAL._SY355_.jpg",
         "difficultyLevel": "2"
+    },
+    {
+        "id": 8,
+        "name": "One More Cube",
+        "description": "Another one",
+        "imageUrl": "https://sp.yimg.com/ib/th?id=OPE.5jLyQsmWZndhbg300C300&pid=21.1",
+        "difficultyLevel": "1"
     }
 ]
