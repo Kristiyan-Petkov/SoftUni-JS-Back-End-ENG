@@ -2,6 +2,7 @@ const fs = require('fs/promises');
 const path = require('path');
 const cubes = require('../views/db.json');
 
+exports.getOne = (cubeId) => cubes[cubeId];
 
 exports.save = (cube) => {
     cubes.push(JSON.parse(JSON.stringify(cube)));
