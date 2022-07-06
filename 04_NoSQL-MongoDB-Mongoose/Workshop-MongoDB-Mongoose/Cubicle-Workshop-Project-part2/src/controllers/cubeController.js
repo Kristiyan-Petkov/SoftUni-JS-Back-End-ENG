@@ -8,7 +8,7 @@ router.get('/create', (req, res) => {
     res.render('create');
 })
 
-router.post('/create', (req, res) => {
+router.post('/create', async (req, res) => {
     const cube = req.body;
 
     // validate new cube data (checks can be extended);
@@ -19,19 +19,26 @@ router.post('/create', (req, res) => {
     // save data;
     // cubes.push(JSON.parse(JSON.stringify(cube)));
     // fs.writeFile('./src/views/db.json', JSON.stringify(cubes, '', 4))
-    cubeService.save(cube)
-        .then(() => {
-            // redirect to page;
-            res.redirect('/');
-        })
-        .catch(err => {
-            res.status(400).send(`Unsuccessful cube creation. Please try again.\n${err}`)
-        })
+    try {
+        await cubeService.create(cube);
+        res.redirect('/');
+    } catch (error) {
+        res.status(400).send(error);
+    }
+    
+    // cubeService.create(cube)
+    //     .then(() => {
+    //         // redirect to page;
+    //         res.redirect('/');
+    //     })
+    //     .catch(err => {
+    //         res.status(400).send(`Unsuccessful cube creation. Please try again.\n${err}`)
+    //     })
 
 });
 
-router.get('/details/:id', (req, res) => {
-    const cube = cubeService.getOne(req.params.id)
+router.get('/details/:id', async (req, res) => {
+    const cube = await cubeService.getOne(req.params.id).lean();
     res.render('details', { cube });
 })
 
