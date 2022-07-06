@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.use('/', homeController);
 router.use('/cube', cubeController);
-router.use('/accessory', cubeController);
+router.use('/accessory', accessoryController);
 
 module.exports = router;
