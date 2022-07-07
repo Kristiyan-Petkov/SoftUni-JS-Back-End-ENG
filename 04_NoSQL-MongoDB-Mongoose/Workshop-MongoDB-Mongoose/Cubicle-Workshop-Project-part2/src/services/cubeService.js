@@ -13,11 +13,6 @@ exports.getAll = async (search = '', fromInput, toInput) => {
         .where('difficultyLevel').lte(to).gte(from)
         .lean()
     
-
-    // const result = cubes
-    //     .filter(x => x.name.toLowerCase().includes(search.toLowerCase()))
-    //     .filter(x => x.difficultyLevel >= from && x.difficultyLevel <= to);
-    
     return cubes;
 };
 
