@@ -17,7 +17,8 @@ exports.getAll = async (search = '', fromInput, toInput) => {
     return cubes;
 };
 
-exports.getOne = (cubeId) => Cube.findById(cubeId).populate('accessories'); //populates it with the db relations from accessories array in the schema
+exports.getOne = (cubeId) => Cube.findById(cubeId); 
+exports.getOneDetailed = (cubeId) => Cube.findById(cubeId).populate('accessories'); //populates it with the db relations from accessories array in the schema
 
 exports.create = (cube) => Cube.create(cube);
 
