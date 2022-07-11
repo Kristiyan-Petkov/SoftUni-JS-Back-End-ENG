@@ -15,4 +15,14 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.get('/login', (req, res) => {
+    res.render('auth/login');
+});
+
+router.post('/login', (req, res) => {
+    let userToLog = req.body;
+    res.redirect('/');
+
+})
+
 module.exports = router;
