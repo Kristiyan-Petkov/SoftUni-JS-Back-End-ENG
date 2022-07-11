@@ -1,14 +1,3 @@
-{{!-- <main>
-  <h1>{{cube.name}}</h1>
-  <img class="cube" src="{{cube.imageUrl}}">
-  <div class="details">
-    <p><span>Description:</span> {{cube.description}} </p>
-    <p><span>Difficulty level:</span> {{cube.difficultyLevel}}</p>
-    <a class="btn" href="/">Back</a>
-    <a class="btn" href="/cube/{{cube._id}}/attach-accessory">Attach</a>
-  </div>
-</main> --}}
-
 <main>
   <h1>{{cube.name}}</h1>
   <img class="cube" src="{{cube.imageUrl}}">
@@ -17,6 +6,7 @@
     <p><span>Difficulty level:</span> {{cube.difficultyLevel}}</p>
     <a class="btn" href="/">Back</a>
     <a class="btn" href="/cube/{{cube._id}}/attach-accessory">Attach</a>
+    <a class="btn" href="/cube/{{cube._id}}/edit">Edit</a>
   </div>
   <h2>Accessories</h2>
   <div class="accessories">

@@ -20,6 +20,7 @@ exports.getOne = (cubeId) => Cube.findById(cubeId);
 exports.getOneDetailed = (cubeId) => Cube.findById(cubeId).populate('accessories'); //populates it with the db relations from accessories array in the schema
 
 exports.create = (cube) => Cube.create(cube);
+exports.edit = (cubeId, cubeData) => Cube.findByIdAndUpdate(cubeId, cubeData);
 
 exports.attachAccessory = async (cubeId, accessoryId) => {
     const cube = await Cube.findById(cubeId);
@@ -33,3 +34,4 @@ exports.attachAccessory = async (cubeId, accessoryId) => {
 
     return cube; 
 }
+
