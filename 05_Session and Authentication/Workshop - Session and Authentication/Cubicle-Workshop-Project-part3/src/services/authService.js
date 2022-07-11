@@ -9,7 +9,7 @@ exports.register = async ({username, password, repeatPassword}) => {
     }
     let hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    let createdUser = User.create({
+    let createdUser = User.create({ //no need to resolve the promise (await) here, as it's resolved in authController
         username, 
         password: hashedPassword
     });
