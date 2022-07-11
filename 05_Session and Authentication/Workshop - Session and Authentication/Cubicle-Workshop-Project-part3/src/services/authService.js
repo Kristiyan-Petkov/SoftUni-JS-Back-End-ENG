@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const User = require('../models/User');
-const saltRounds = 11;
-const secret = Math.random().toString();
+// const saltRounds = 11;
+// const secret = Math.random().toString();
+const {secret, saltRounds} = require('../constants');
 
 exports.register = async ({ username, password, repeatPassword }) => {
     if (password !== repeatPassword) {
