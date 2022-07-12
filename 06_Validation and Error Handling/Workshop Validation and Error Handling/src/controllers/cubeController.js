@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { body, validationResult } = require('express-validator');
 const { log } = require('console');
 // const fs = require('fs/promises');
 // const cubes = require('../views/db.json');
@@ -10,31 +11,41 @@ router.get('/create', isAuth, (req, res) => {
     res.render('create');
 })
 
-router.post('/create', isAuth, async (req, res) => {
-    const cube = req.body;
-    cube.owner = req.user._id;
-    // validate new cube data (checks can be extended);
-    if (cube.name.length == 0) {
-        return res.status(400).send('Invalid cube name');
+router.post(
+    '/create',
+    isAuth,
+    body('name', 'Name is required!').not().isEmpty(),
+    body('description', 'Description text must be between 5 and 120 characters!').isLength({min: 5, max: 120}),
+    body('difficultyLevel', 'Difficulty level must be between 1 and 6!').toInt().isInt({min: 1, max: 6}),
+    async (req, res) => {
+        const cube = req.body;
+        cube.owner = req.user._id;
+        // validate new cube data (checks can be extended);
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).send(errors.array()[0].msg);
+        }
+        if (cube.name.length == 0) {
+            return res.status(400).send('Invalid cube name');
+        }
+
+        try {
+            await cubeService.create(cube);
+            res.redirect('/');
+        } catch (error) {
+            res.status(400).send(error);
+        }
+
+        // cubeService.create(cube)
+        //     .then(() => {
+        //         // redirect to page;
+        //         res.redirect('/');
+        //     })
+        //     .catch(err => {
+        //         res.status(400).send(`Unsuccessful cube creation. Please try again.\n${err}`)
+        //     })
     }
-
-    try {
-        await cubeService.create(cube);
-        res.redirect('/');
-    } catch (error) {
-        res.status(400).send(error);
-    }
-
-    // cubeService.create(cube)
-    //     .then(() => {
-    //         // redirect to page;
-    //         res.redirect('/');
-    //     })
-    //     .catch(err => {
-    //         res.status(400).send(`Unsuccessful cube creation. Please try again.\n${err}`)
-    //     })
-
-});
+);
 
 router.get('/details/:id', async (req, res) => {
     const cube = await cubeService.getOneDetailed(req.params.id).lean();
