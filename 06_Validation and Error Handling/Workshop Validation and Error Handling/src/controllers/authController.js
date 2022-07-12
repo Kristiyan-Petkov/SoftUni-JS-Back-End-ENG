@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const validator = require('validator');
+const { isEmail } = require('../middlewares/validatorMiddleware');
 const authService = require('../services/authService');
 const { cookieSessionName } = require('../constants');
 
@@ -6,7 +8,10 @@ router.get('/register', (req, res) => {
     res.render('auth/register');
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', isEmail, async (req, res) => {
+    // if (!isEmail(req.body.username)) {
+    //     res.status('404').send('Invalid email');
+    // }
     let createdUser = await authService.register(req.body);
     if (createdUser) {
         res.redirect('/auth/login');
