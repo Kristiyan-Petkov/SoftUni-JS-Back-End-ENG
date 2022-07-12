@@ -9,7 +9,7 @@ require('./config/handlebars')(app);
 
 app.use('/', express.static('public')); //route can also be '/static'
 app.use(cookieParser());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(auth);
 app.use(routes);
 
