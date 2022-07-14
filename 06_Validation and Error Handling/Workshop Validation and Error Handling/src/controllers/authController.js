@@ -9,6 +9,7 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', isEmail, async (req, res) => {
+    
     let createdUser = await authService.register(req.body);
     if (createdUser) {
         res.redirect('/auth/login');
