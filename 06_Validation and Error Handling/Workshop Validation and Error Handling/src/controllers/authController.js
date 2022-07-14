@@ -9,13 +9,13 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', isEmail, async (req, res) => {
-    
+
     let createdUser = await authService.register(req.body);
     if (createdUser) {
         res.redirect('/auth/login');
     } else {
-        //TO DO add notification
-        res.redirect('404');
+        let error = {message: 'Password and repeat password must be the same'}
+        res.status(400).render('auth/register', {error: error.message});
     }
 });
 
