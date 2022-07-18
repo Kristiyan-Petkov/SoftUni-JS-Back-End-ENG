@@ -10,7 +10,7 @@ app.engine('hbs', hbs.engine({
 }))
 app.set('view engine', 'hbs');
 app.use(express.urlencoded({extended: false})); //body parser
-app.use(express.static('public')); //setting up the static path
+app.use(express.static('style')); //setting up the static path
 app.use(routes);
 
 

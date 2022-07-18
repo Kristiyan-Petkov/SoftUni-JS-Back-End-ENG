@@ -1,5 +1,6 @@
 #tasks
 
+## Initial setup
 1. Initialize project
     npm init -y
     -> in package.json 
@@ -49,4 +50,30 @@
     * in routes: 
         const homeContoller = require('./controllers/homeController');
         router.use(homeContoller);
-11. Add home view/template
+11. Fix static assets paths (views and css)
+12. Add home view/template (hbs)
+
+## Authentication setup
+13. Add authController
+    * create authController.js
+        const router = require('express').Router();
+
+        router.get('/login', (req, res) => {
+        res.render('auth/login');
+        });
+
+        module.exports = router;
+    * add authController to routes.js
+        const authContoller = require('./controllers/authController');
+        router.use('/auth',authContoller);
+    * fix the nav menu link to login (and all other nav links)
+        <li><a href="/auth/logout">Logout</a></li>
+        <!-- Guest users -->
+        <li><a href="/auth/login">Login</a></li>
+        <li><a href="/auth/register">Register</a></li>
+
+14. Add login page login.hbs
+    * only leave <main> & make sure all internal paths work fine
+
+
+FIX THE CSS YOU BROKE
