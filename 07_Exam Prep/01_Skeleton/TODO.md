@@ -74,6 +74,11 @@
 
 14. Add login page login.hbs
     * only leave <main> & make sure all internal paths work fine
-
-
-FIX THE CSS YOU BROKE
+    * add login get path to authController.js
+            router.get('/login', (req, res) => {
+            res.render('auth/login');
+            });
+15. Add register page
+    * only leave <main> & make sure all internal paths work fine
+    * add register get path to authController.js
+    
