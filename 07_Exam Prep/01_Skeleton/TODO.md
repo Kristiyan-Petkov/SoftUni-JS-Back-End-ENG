@@ -7,9 +7,9 @@
         "scripts": {
         "start": "nodemon index js"
         },
-2. Install initial dependencies /nodemon (dev dependency), express, express-handlebars/
+2. Install initial dependencies /nodemon (dev dependency), express, express-handlebars, bcrypt, jsonwebtoken/
     npm i -D nodemon
-    npm i express express-handlebars
+    npm i express express-handlebars bcrypt jsonwebtoken mongoose
     npm start
 3. add resources to views folder (html/hbs)
 4. add resources to public folder (css)
@@ -106,8 +106,60 @@
                 return mongoose.connect(DB_QUERYSTRING); //connect to DB
             }
             
-        * require it in index.js
+        * require it in index.js and set it up
             const { dbInit } = require('./config/db');
-            
-        18. create user model
+            dbInit()
+                .then(app.listen(PORT, () => console.log(`Server is running on port ${PORT}`)))
+                .catch(err => console.log(`Cannot connect to DB, please try again\n${err}`));
 
+18. create basic user model + hashing in the model
+            * create salt in env.js
+                exports.SALT_ROUNDS = 10;
+            * create models > User.js:
+                const mongoose = require('mongoose');
+                const userSchema = new mongoose.Schema({
+                username: {
+                    type: String,
+
+                },
+                password: {
+                    type: String,
+                }
+                })
+
+                const User = mongoose.model('User', userSchema);
+
+                module.exports = User;
+
+19. create service > authService.js which will handle the DB interactions
+    * in therminal
+        npm i bcrypt jsonwebtoken
+    * then
+    const User = require('../models/User');
+    exports.create = (userData) => User.create(userData);
+20. Get register post action to work + to create new user in the DB + alert if password is incorrect
+    * import authService.js to the authController.js
+        const authService = require('../services/authService');
+    * create new user with hashed password in authController (the hashing will be done in the service)
+        router.post('/register', async (req, res) => {
+        const { username, password, repeatPassword } = req.body;
+
+        if (password !== repeatPassword) {
+            return res.render('auth/register', {error: 'Both password field must match!'})
+        }
+        try {
+            await authService.create({username, password}); 
+            res.render('auth/login');
+        } catch (err) {
+            // add mongoose error mapper
+            return res.render('auth/register', {error: 'DB error'});
+        }
+        });
+21. notifications
+    * add notification element to layout
+     {{#if error}}
+        <div class="error-box">
+            <p>{{error}}</p>
+        </div>
+        {{/if}}
+22. NE REGISTRIRA USERNAME V BAZATA DANNI
