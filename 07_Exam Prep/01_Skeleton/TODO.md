@@ -81,4 +81,33 @@
 15. Add register page
     * only leave <main> & make sure all internal paths work fine
     * add register get path to authController.js
-    
+        router.get('/register', (req, res) => {
+        res.render('auth/register');
+        });
+    * modify form by removing action and adding POST method
+    * define the names of all input fields in the register form -> username, password, repreatPassword, address) 
+    * create its posting path in authController.js
+        router.post('/register', (req, res) => {
+        console.log(req.body);
+        res.render('auth/login');
+        });
+    * fix link to "Already have an account?"
+        <p>Already have an account?<a href="login"> Sign in</p>
+    ### Database setup
+        16. npm i mongoose
+        17. configure mongoose
+        * in env.js add the DB
+            exports.DB_QUERYSTRING = 'mongodb://localhost:27017/artGallery';
+        * create in config a new file db.js
+            const mongoose = require('mongoose');
+            const { DB_QUERYSTRING } = require('./env');
+            exports.dbInit = () => {
+                mongoose.connection.on('open', () => console.log('DB is connected')); //event listener
+                return mongoose.connect(DB_QUERYSTRING); //connect to DB
+            }
+            
+        * require it in index.js
+            const { dbInit } = require('./config/db');
+            
+        18. create user model
+
