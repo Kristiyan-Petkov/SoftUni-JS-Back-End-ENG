@@ -162,4 +162,12 @@
             <p>{{error}}</p>
         </div>
         {{/if}}
-22. NE REGISTRIRA USERNAME V BAZATA DANNI
+22. Login page
+    * login action in authController
+        router.post('/login', async (req, res) => {
+        const { username, password } = req.body;
+        
+        const user = await authService.login( username, password);
+        });
+    * service method to add in authService
+        const bcrypt = require('bcrypt');
