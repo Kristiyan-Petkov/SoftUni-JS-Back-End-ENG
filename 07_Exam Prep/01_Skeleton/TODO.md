@@ -19,12 +19,14 @@
 6. express config in index.js
     //server's up (+body parser and static path):
     const express = require('express');
+    const cookieParser = require('cookie-parser');
     const { PORT } = require('./config/env');
 
     const app = express();
     app.use(express.urlencoded({extended: false})); //body parser
     app.use(express.static('public')); //setting up the static path
-
+    app.use(cookieParser);
+    app.use(routes);
     app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 7. Configure express handlebars and view engine
     const hbs = require('express-handlebars');
@@ -215,13 +217,13 @@
             - import the cookie session name
                 const { COOKIE_SESSION_NAME } = require('../constants');
             - in POST login -> set the cookie and redirect back home:
-                res.cookie(COOKIE_SESSION_NAME, token);
+                res.cookie(COOKIE_SESSION_NAME, token, { httpOnly: true });
                 res.redirect('/');
 24. Registered goes straight to Home already logged in (in authController.js register POST)
         try {
         const createdUser = await authService.create({ username, password, address });
         const token = await authService.createToken(createdUser);
-        res.cookie(COOKIE_SESSION_NAME, token);
+        res.cookie(COOKIE_SESSION_NAME, token, { httpOnly: true });
         res.redirect('/');
 25. fix login page rendering -> add names to the entry fields as DB expects them
 26. LOGOUT - in authController.js
@@ -229,5 +231,41 @@
         res.clearCookie(COOKIE_SESSION_NAME);
         res.redirect('/');
         })
-27. 
+
+27. navigation if logged in or not
+    * create middlewares > authMiddleware.js
+        const jwt = require('jsonwebtoken');
+        const {COOKIE_SESSION_NAME} = require('../constants');
+        const {SECRET} = require('../config/env');
+
+        exports.auth = (req, res, next) => {
+            const token = req.cookies[COOKIE_SESSION_NAME];
+            //does the user have a token / is he logged in
+            if (token) {
+                jwt.verify(token, SECRET, ((err, decodedToken) => {
+                    if (err){
+                        res.clearCookie(COOKIE_SESSION_NAME);
+                        return next(err);
+                    }
+                    req.user = decodedToken;
+                    res.locals.user = decodedToken;
+                    next();
+                }));
+            } else {
+                next();
+            }
+        };
+    * in index js add cookie-parser and auth
+        const cookieParser = require('cookie-parser');
+        const { auth } = require('./middlewares/authMiddleware');
+        app.use(cookieParser());
+        app.use(auth);
+28. Publication
+
+
+
+render gallery
+29. create publication
+30. add 404 page
+31. global error handling
 

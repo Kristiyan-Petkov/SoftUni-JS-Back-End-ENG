@@ -21,18 +21,19 @@ exports.login = async (username, password) => {
     }
 
     //return user to controller, which will call the tokenCreator
-    return user;    
+    return user;
 };
 
 exports.createToken = (user) => {
     const payload = { _id: user._id, username: user.username, address: user.address };
     const options = { expiresIn: '2d' };
     const tokenPromise = new Promise((resolve, reject) => {
-        jwt.sign(payload, SECRET, options, (err, decodedToken) => { 
-        if (err) {
-            return reject(err);
-        }
-        resolve(decodedToken);});
+        jwt.sign(payload, SECRET, options, (err, decodedToken) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(decodedToken);
+        });
     });
 
     return tokenPromise;
