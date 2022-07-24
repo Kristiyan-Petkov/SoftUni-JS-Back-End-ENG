@@ -171,3 +171,63 @@
         });
     * service method to add in authService
         const bcrypt = require('bcrypt');
+        exports.login = async (username, password) => {
+            //find user in db
+            const user = await User.findOne({ username });
+            
+            //throw error if no such user exists
+            if (!user) {
+                throw { message: 'Cannot find username or password' };
+            }
+
+            //validate the password
+            const isValid = bcrypt.compare(password, user.password);
+            if (!isValid) {
+                throw { message: 'Cannot find username or password' };
+            }
+        }
+23. Generate jwt token
+    * in env.js add the secret
+        exports.SECRET = 'shbcqjhcBISYUY67667T6BJBBHBUjjjqqndznx';
+    * in authController at POST for login call a new createToken method:
+        const token = await authService.createToken(user);
+    * in authService:
+        const jwt = require('jsonwebtoken');
+        const { SECRET } = require('../config/env');
+        exports.createToken = (user) => {
+            const payload = { _id: user._id, username: user.username, address: user.address };
+            const options = { expiresIn: '2d' };
+            const tokenPromise = new Promise((resolve, reject) => {
+                jwt.sign(payload, SECRET, options, (err, decodedToken) => { 
+                if (err) {
+                    return reject(err);
+                }
+                resolve(decodedToken);});
+            });
+
+            return tokenPromise;
+        };
+    * add token to cookie
+        - TERMINAL: npm i cookie-parser
+        - create constants.js and add the cookie session name
+            export const COOKIE_SESSION_NAME = 'user-session';
+        - in authController.js:
+            - import the cookie session name
+                const { COOKIE_SESSION_NAME } = require('../constants');
+            - in POST login -> set the cookie and redirect back home:
+                res.cookie(COOKIE_SESSION_NAME, token);
+                res.redirect('/');
+24. Registered goes straight to Home already logged in (in authController.js register POST)
+        try {
+        const createdUser = await authService.create({ username, password, address });
+        const token = await authService.createToken(createdUser);
+        res.cookie(COOKIE_SESSION_NAME, token);
+        res.redirect('/');
+25. fix login page rendering -> add names to the entry fields as DB expects them
+26. LOGOUT - in authController.js
+        router.get('/logout', (req, res) =>{
+        res.clearCookie(COOKIE_SESSION_NAME);
+        res.redirect('/');
+        })
+27. 
+
