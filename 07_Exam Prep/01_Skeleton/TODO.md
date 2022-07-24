@@ -260,8 +260,8 @@
         const { auth } = require('./middlewares/authMiddleware');
         app.use(cookieParser());
         app.use(auth);
-28. Route guard setup - middleware checking if user is authorised or not
-        *   exports.isAuth = (req, res, next) => {
+28. Route guard setup1 - middleware blocking if user is NOT logged in
+        *   middleware --> exports.isAuth = (req, res, next) => {
                 if (!req.user) {
                     return res.redirect('/login');
                 }
@@ -274,10 +274,56 @@
                 res.clearCookie(COOKIE_SESSION_NAME);
                 res.redirect('/');
             })
+29. Route guard setup1 - middleware blocking if user IS logged in
+        *   middleware --> 
+            exports.isGuest = (req, res, next) => {
+                if (req.user) {
+                    return res.redirect('/');
+                }
+                next();
+            }
+        *  authController add"isGuest" to login and register requests
+            like this example:
+            const { isAuth, isGuest } = require('../middlewares/authMiddleware');
+            router.get('/login', >>ISGUEST<<, (req, res) => {
+                res.render('auth/login');
+            });
+30. Render 404 page
 
-
-render gallery
-29. create publication
-30. add 404 page
 31. global error handling
+    * create errorHandlerMiddleware.js
+        const {getErrorMessage} = require('../utils/errorHelpers');
+
+        exports.errorHandler = (err, req, res, next) => {
+            const status = err.status || 404;
+            res.status(status).render('404', {error: getErrorMessage(err)})
+        }
+    * create utils > errorHelpers.js
+            exports.getErrorMessage = (err) => {
+                // processes any error
+                let errorMessage = err.message;
+                // only mongoose errors have .errors object in them (this is the way to distinct them from other errors)
+                if (err.errors) {
+                    // TO SHOW ONLY THE FIRST -> errorMessage = Object.values(err.errors)[0].message;
+
+                    // TO SHOW ALL ERRORS
+                    errorMessage = Object.values(err.errors).map((a,b) => a.message
+                    ).join(`\n`);
+                    // console.log(errorMessage);
+                }
+                return errorMessage
+            }
+    * require the middleware in the index.js
+        const { errorHandlererrorHandler } = require('./middlewares/errorHandlerMiddleware');
+        below app.user(routes) => add 
+                                    app.use(errorHandler)
+    * in authCOntroller.js
+        -> requite errorHelpers.js
+            const { getErrorMessage } = require('../utils/errorHelpers');
+        -> at POST register when catching an error
+            catch (error) {
+                return res.render('auth/register', { error: getErrorMessage(error) });
+            }
+    * in User model -> set mongoose error messages
+
 
