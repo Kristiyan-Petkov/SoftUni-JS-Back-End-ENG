@@ -260,8 +260,20 @@
         const { auth } = require('./middlewares/authMiddleware');
         app.use(cookieParser());
         app.use(auth);
-28. Publication
+28. Route guard setup - middleware checking if user is authorised or not
+        *   exports.isAuth = (req, res, next) => {
+                if (!req.user) {
+                    return res.redirect('/login');
+                }
+                next();
+            }
+        *  authController add"isAuth" to logout => you can only logout if you're logged in
+            const { isAuth } = require('../middlewares/authMiddleware');
 
+            router.get('/logout', isAuth, (req, res) => {
+                res.clearCookie(COOKIE_SESSION_NAME);
+                res.redirect('/');
+            })
 
 
 render gallery

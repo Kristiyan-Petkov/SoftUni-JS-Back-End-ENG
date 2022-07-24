@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const authService = require('../services/authService');
 const { COOKIE_SESSION_NAME } = require('../constants');
+const { isAuth } = require('../middlewares/authMiddleware');
 
 router.get('/login', (req, res) => {
     res.render('auth/login');
@@ -36,7 +37,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', isAuth, (req, res) => {
     res.clearCookie(COOKIE_SESSION_NAME);
     res.redirect('/');
 })
