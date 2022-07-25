@@ -33,9 +33,17 @@ const publicationSchema = new mongoose.Schema({
     ],
 })
 
-publicationSchema.path('artPicture').validate(function () {
-    return this.artPicture.startsWith('http');
-}, 'Image url should be a link');
+// publicationSchema.path('artPicture').validate(function () {
+//     return this.artPicture.startsWith('http');
+// }, 'Image url should be a link');
+
+// publicationSchema.path('autheticCertif').validate(function () {
+//     let answer = toLowerCase(this.autheticCertif);
+//     if (answer != 'yes' && answer != 'no'){
+//         return false;
+//     }
+//     return true;
+// }, 'Certificate of authenticity is Yes/No question');
 
 const Publication = mongoose.model('Publication', publicationSchema);
 
