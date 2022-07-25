@@ -9,5 +9,8 @@ router.use(homeContoller);
 router.use('/auth',authContoller);
 router.use('/publication', publicationContoller);
 router.use('/gallery', galleryController);
+router.use('*', (req, res) => {
+    res.render('404');
+});
 
 module.exports = router;

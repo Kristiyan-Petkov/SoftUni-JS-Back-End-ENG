@@ -326,4 +326,4 @@
             }
     * in User model -> set mongoose error messages
 
-
+SPORED TOKEN-A da se dobavi author na publicaiton
