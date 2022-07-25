@@ -3,7 +3,7 @@ const publicationService = require('../services/publicationService');
 const { isAuth, isGuest } = require('../middlewares/authMiddleware');
 const { getErrorMessage } = require('../utils/errorHelpers');
 
-router.get('/', (req, res) => {
+router.get('/', isAuth, (req, res) => {
     console.log(publicationService)
     res.render('publication/create');
 })
