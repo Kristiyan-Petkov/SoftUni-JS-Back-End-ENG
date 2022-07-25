@@ -5,10 +5,12 @@ const publicationSchema = new mongoose.Schema({
         type: String,
         unique: [true, 'An article of the same name exits already.'],
         required: [true, 'Title field is required.'],
+        minLength: [6, 'Title should be a minimum of 6 characters long.'],
     },
     paintingTechnique: {
         type: String,
         required: [true, 'Painting technique field is required.'],
+        maxLength: [15, 'Painting technique should be a maximum of 15 characters long.'],
     },
     artPicture: {
         type: String,
@@ -30,6 +32,10 @@ const publicationSchema = new mongoose.Schema({
         }
     ],
 })
+
+publicationSchema.path('artPicture').validate(function () {
+    return this.artPicture.startsWith('http');
+}, 'Image url should be a link');
 
 const Publication = mongoose.model('Publication', publicationSchema);
 

@@ -13,11 +13,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Password field is required.'],
-        minLength: [4, 'Password must be at least 4 characters.'],
+        minLength: [3, 'Password must be at least 3 characters.'],
     },
     address: {
         type: String,
         required: [true, 'Address field is required.'],
+        maxLength: [20, 'Address field max lenght is 20 characters'],
     },
     publications: [
         {
