@@ -1,10 +1,10 @@
 const router = require('express').Router();
-const publicationService = require('../services/publicationService');
+// const galleryService = require('../services/galleryService');
 const { isAuth, isGuest } = require('../middlewares/authMiddleware');
 const { getErrorMessage } = require('../utils/errorHelpers');
 
-router.get('/', isAuth, (req, res) => {
-    res.render('publication/create');
+router.get('/', (req, res) => {
+    res.render('gallery/gallery');
 })
 
 module.exports = router;
