@@ -6,7 +6,7 @@ exports.getErrorMessage = (err) => {
         // TO SHOW ONLY THE FIRST -> errorMessage = Object.values(err.errors)[0].message;
 
         // TO SHOW ALL ERRORS
-        errorMessage = Object.values(err.errors).map((a,b) => a.message
+        errorMessage = Object.values(err.errors).map(a => a.message
         ).join(`\n`);
         // console.log(errorMessage);
     }

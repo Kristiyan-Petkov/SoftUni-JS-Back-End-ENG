@@ -5,19 +5,26 @@ const { SALT_ROUNDS } = require('../config/env');
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        unique: [true, 'Username already exists'],
-        required: [true, 'Username field is required'],
-        minLength: [4, 'Username must be at least 4 characters'],
+        unique: [true, 'Username already taken.'],
+        required: [true, 'Username field is required.'],
+        minLength: [4, 'Username must be at least 4 characters.'],
         //add  check and error message
     },
     password: {
         type: String,
-        required: [true, 'Password field is required'],
-        minLength: [4, 'Password must be at least 4 characters'],
+        required: [true, 'Password field is required.'],
+        minLength: [4, 'Password must be at least 4 characters.'],
     },
     address: {
         type: String,
-    }
+        required: [true, 'Address field is required.'],
+    },
+    publications: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'Publication'
+        }
+    ],
 })
 
 userSchema.pre('save', function (next) {
