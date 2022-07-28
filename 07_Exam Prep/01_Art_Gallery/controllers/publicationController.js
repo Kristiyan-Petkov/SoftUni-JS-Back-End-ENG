@@ -11,6 +11,9 @@ router.get('/', isAuth, (req, res) => {
 router.post('/', isAuth, async (req, res) => {
     // const { title, paintingTechnique, artPicture, autheticCertif } = req.body;
     const { title, paintingTechnique, artPicture, autheticCertif } = req.body;
+    const certif = autheticCertif.toLowerCase();
+    console.log(certif);
+
     try {
         const createdPublication = await publicationService.createArt({title, paintingTechnique, artPicture, autheticCertif});
         res.redirect('/gallery');
