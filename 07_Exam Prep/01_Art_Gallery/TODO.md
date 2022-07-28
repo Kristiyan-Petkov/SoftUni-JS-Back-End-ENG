@@ -326,5 +326,5 @@
             }
     * in User model -> set mongoose error messages
 
+Render gallery with hbs
 SPORED TOKEN-A da se dobavi author na publicaiton
-ADD ERRORS for login page (if user is inexitant)

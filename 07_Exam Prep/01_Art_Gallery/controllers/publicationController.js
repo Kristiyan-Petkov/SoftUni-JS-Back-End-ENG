@@ -11,11 +11,10 @@ router.get('/', isAuth, (req, res) => {
 router.post('/', isAuth, async (req, res) => {
     // const { title, paintingTechnique, artPicture, autheticCertif } = req.body;
     const { title, paintingTechnique, artPicture, autheticCertif } = req.body;
-    const certif = autheticCertif.toLowerCase();
-    console.log(certif);
+    const author = req.user._id
 
     try {
-        const createdPublication = await publicationService.createArt({title, paintingTechnique, artPicture, autheticCertif});
+        const createdPublication = await publicationService.createArt({title, paintingTechnique, artPicture, autheticCertif, author});
         res.redirect('/gallery');
     } catch (error) {
         // add mongoose error mapper
