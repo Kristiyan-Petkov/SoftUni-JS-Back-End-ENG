@@ -328,4 +328,3 @@
 
 SPORED TOKEN-A da se dobavi author na publicaiton
 ADD ERRORS for login page (if user is inexitant)
-Add errors if certificate is not yes or no

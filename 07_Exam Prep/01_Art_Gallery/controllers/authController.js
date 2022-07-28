@@ -11,10 +11,15 @@ router.get('/login', isGuest, (req, res) => {
 router.post('/login', isGuest, async (req, res) => {
     const { username, password } = req.body;
 
-    const user = await authService.login(username, password);
-    const token = await authService.createToken(user);
-    res.cookie(COOKIE_SESSION_NAME, token, { httpOnly: true });
-    res.redirect('/');
+    try {
+        const user = await authService.login(username, password);
+        const token = await authService.createToken(user);
+        res.cookie(COOKIE_SESSION_NAME, token, { httpOnly: true });
+        res.redirect('/');
+    } catch (error) {
+        return res.render('auth/login', { error: getErrorMessage(error) });
+    }
+    
 });
 
 router.get('/register', isGuest, (req, res) => {
