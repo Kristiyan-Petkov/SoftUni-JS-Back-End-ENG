@@ -36,6 +36,12 @@ router.get('/details/:id', async (req, res) => {
         isAuthor = true;
     }
     res.render('details', { publication , username, cookie, isAuthor});
-})
+});
+
+router.get('/details/:id/delete', async (req, res) => {
+    const publication = await publicationService.getOneDetailed(req.params.id).lean();
+    await publicationService.delete(publication);
+    res.redirect('/gallery');
+});
 
 module.exports = router;

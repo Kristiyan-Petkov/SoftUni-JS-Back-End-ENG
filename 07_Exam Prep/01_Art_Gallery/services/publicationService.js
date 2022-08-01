@@ -28,3 +28,6 @@ exports.userData = async (token) => {
     }
     return false
 }
+
+exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, {runValidators: true});
+exports.delete = (publicationId) => Publication.findByIdAndDelete(publicationId);
