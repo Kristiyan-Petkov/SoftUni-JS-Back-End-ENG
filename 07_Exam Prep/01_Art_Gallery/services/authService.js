@@ -38,3 +38,5 @@ exports.createToken = (user) => {
 
     return tokenPromise;
 };
+
+exports.findUser = (userId) => User.findById(userId);

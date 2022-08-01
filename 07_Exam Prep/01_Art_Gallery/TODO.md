@@ -326,4 +326,6 @@
             }
     * in User model -> set mongoose error messages
 
-Render gallery with hbs
+render details page
+details page buttons according to user type
+render details buttons

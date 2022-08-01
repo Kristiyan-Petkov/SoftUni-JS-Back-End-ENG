@@ -8,3 +8,6 @@ exports.getAll = async () => {
         .lean()
     return publications;
 };
+
+exports.getOne = (publicationId) => Publication.findById(publicationId); 
+exports.getOneDetailed = (publicationId) => Publication.findById(publicationId).populate('shared'); //populates it with the db relations from accessories array in the schema
