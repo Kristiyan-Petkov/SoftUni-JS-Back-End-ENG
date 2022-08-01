@@ -326,6 +326,6 @@
             }
     * in User model -> set mongoose error messages
 
-render details page
-details page buttons according to user type
+
+details page buttons according to user type -> check if author ONGOING
 render details buttons
