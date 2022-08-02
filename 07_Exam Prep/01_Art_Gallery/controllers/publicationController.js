@@ -38,7 +38,13 @@ router.get('/details/:id', async (req, res) => {
     if (userId == authorId) {
         isAuthor = true;
     }
-    res.render('details', { publication, username, cookie, isAuthor });
+
+    const sharedSearch = publication.shared.filter(a => a.username == userData.username).length;
+    let hasShared = false;
+    if (sharedSearch > 0){
+        hasShared = true;
+    }
+    res.render('details', { publication, username, cookie, isAuthor, hasShared });
 });
 
 router.get('/details/:id/delete', async (req, res) => {
@@ -74,6 +80,32 @@ router.post('/details/:id/edit', async (req, res) => {
             isAuthor = true;
         }
         res.render('details', { publication, username, cookie, isAuthor });
+});
+
+router.get('/details/:id/share', async (req, res) => {
+    // console.log(req.params.id);
+    // console.log(req.user._id);
+    const publication = await publicationService.getOneDetailed(req.params.id).lean();
+    publication.shared.push(req.user._id);
+    await publicationService.edit(req.params.id, {shared: publication.shared});
+
+    // const publication = await publicationService.getOneDetailed(req.params.id).lean();
+    const author = await authService.findUser(publication.author);
+    const authorId = author._id;
+    const username = author.username;
+    const cookie = req.cookies['user-session'];
+    const userData = await publicationService.userData(cookie);
+    const userId = userData._id;
+    let isAuthor = false;
+    if (userId == authorId) {
+        isAuthor = true;
+    }
+    const sharedSearch = publication.shared.indexOf(req.user._id);
+    let hasShared = false;
+    if (sharedSearch >= 0){
+        hasShared = true;
+    }
+    res.render('details', { publication, username, cookie, isAuthor, hasShared });
 });
 
 module.exports = router;
