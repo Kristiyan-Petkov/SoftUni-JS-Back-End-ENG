@@ -15,7 +15,7 @@ router.post('/', isAuth, async (req, res) => {
     const author = req.user._id
 
     try {
-        const createdPublication = await publicationService.createArt({title, paintingTechnique, artPicture, autheticCertif, author});
+        const createdPublication = await publicationService.createArt({ title, paintingTechnique, artPicture, autheticCertif, author });
         res.redirect('/gallery');
     } catch (error) {
         // add mongoose error mapper
@@ -32,16 +32,38 @@ router.get('/details/:id', async (req, res) => {
     const userData = await publicationService.userData(cookie);
     const userId = userData._id;
     let isAuthor = false
-    if (userId == authorId){
+    if (userId == authorId) {
         isAuthor = true;
     }
-    res.render('details', { publication , username, cookie, isAuthor});
+    res.render('details', { publication, username, cookie, isAuthor });
 });
 
 router.get('/details/:id/delete', async (req, res) => {
     const publication = await publicationService.getOneDetailed(req.params.id).lean();
     await publicationService.delete(publication);
     res.redirect('/gallery');
+});
+
+router.get('/details/:id/edit', async (req, res) => {
+    const publication = await publicationService.getOneDetailed(req.params.id).lean();
+    res.render('edit', { publication });
+});
+
+router.post('/details/:id/edit', async (req, res) => {
+        await publicationService.edit(req.params.id, req.body);
+
+        const publication = await publicationService.getOneDetailed(req.params.id).lean();
+        const author = await authService.findUser(publication.author);
+        const authorId = author._id;
+        const username = author.username;
+        const cookie = req.cookies['user-session'];
+        const userData = await publicationService.userData(cookie);
+        const userId = userData._id;
+        let isAuthor = false
+        if (userId == authorId) {
+            isAuthor = true;
+        }
+        res.render('details', { publication, username, cookie, isAuthor });
 });
 
 module.exports = router;

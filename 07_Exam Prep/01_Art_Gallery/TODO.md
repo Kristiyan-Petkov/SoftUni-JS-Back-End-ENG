@@ -329,3 +329,5 @@
 
 details page buttons according to user type -> check if author ONGOING
 render details buttons
+
+router.post('/details/:id/edit' NOT WORKING

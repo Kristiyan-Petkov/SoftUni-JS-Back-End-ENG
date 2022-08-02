@@ -1,4 +1,5 @@
 const Publication = require('../models/Publication');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 const {SECRET} = require('../config/env');
 const { promisify } = require('util');
@@ -29,5 +30,18 @@ exports.userData = async (token) => {
     return false
 }
 
-exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, {runValidators: true});
+// exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, {context: 'query', runValidators: true});
+
+exports.edit = async function (publicationId, publicationData) {
+    console.log(publicationId);
+    console.log(publicationData);
+    try {
+    const modifiedPublication = await Publication.findByIdAndUpdate(publicationId, publicationData);
+    // , {runValidators: true, context: 'query'}
+    return modifiedPublication
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 exports.delete = (publicationId) => Publication.findByIdAndDelete(publicationId);
