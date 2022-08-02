@@ -43,3 +43,15 @@ exports.edit = async function (publicationId, publicationData) {
 };
 
 exports.delete = (publicationId) => Publication.findByIdAndDelete(publicationId);
+
+exports.getAllSharedByUser = async (userId) => {
+    let publications = await Publication
+        .find({
+            $expr: {
+              $in: [userId, "$shared"]
+            }
+          })
+        .lean();
+    let sharedByUser = publications.map(a => a.title).join(', ');
+    return sharedByUser;
+};
