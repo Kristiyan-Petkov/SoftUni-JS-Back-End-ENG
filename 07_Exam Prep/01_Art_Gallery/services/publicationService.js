@@ -33,8 +33,6 @@ exports.userData = async (token) => {
 // exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, {context: 'query', runValidators: true});
 
 exports.edit = async function (publicationId, publicationData) {
-    console.log(publicationId);
-    console.log(publicationData);
     try {
     const modifiedPublication = await Publication.findByIdAndUpdate(publicationId, publicationData);
     // , {runValidators: true, context: 'query'}

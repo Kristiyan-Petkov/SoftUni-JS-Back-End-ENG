@@ -327,7 +327,8 @@
     * in User model -> set mongoose error messages
 
 
-details page buttons according to user type -> check if author ONGOING
-render details buttons
+sharing a publication
+User adding publication when created
 
 router.post('/details/:id/edit' NOT WORKING
+router guards to edit and delete

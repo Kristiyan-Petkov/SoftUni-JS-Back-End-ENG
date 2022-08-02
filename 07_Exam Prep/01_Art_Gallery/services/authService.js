@@ -40,3 +40,5 @@ exports.createToken = (user) => {
 };
 
 exports.findUser = (userId) => User.findById(userId);
+
+exports.updateAuthorship = (userId, publications) => User.findByIdAndUpdate(userId, publications);

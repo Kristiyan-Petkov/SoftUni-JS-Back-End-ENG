@@ -16,6 +16,9 @@ router.post('/', isAuth, async (req, res) => {
 
     try {
         const createdPublication = await publicationService.createArt({ title, paintingTechnique, artPicture, autheticCertif, author });
+        const user = await authService.findUser(author);
+        user.publications.push(createdPublication._id);
+        await authService.updateAuthorship(user._id, {publications: user.publications});
         res.redirect('/gallery');
     } catch (error) {
         // add mongoose error mapper
@@ -40,6 +43,13 @@ router.get('/details/:id', async (req, res) => {
 
 router.get('/details/:id/delete', async (req, res) => {
     const publication = await publicationService.getOneDetailed(req.params.id).lean();
+    const pubId = publication._id;
+    const author = req.user._id
+    const user = await authService.findUser(author);
+    const publications = user.publications;
+    const indexToRemove = publications.indexOf(pubId);
+    publications.splice(indexToRemove, 1);
+    await authService.updateAuthorship(user._id, {publications: publications});
     await publicationService.delete(publication);
     res.redirect('/gallery');
 });

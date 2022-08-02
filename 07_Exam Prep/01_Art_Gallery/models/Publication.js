@@ -35,12 +35,12 @@ const publicationSchema = new mongoose.Schema({
 })
 
 publicationSchema.path('artPicture').validate(function () {
-    console.log(this.artPicture);
+    // console.log(this.artPicture);
     return this.artPicture.startsWith('http');
 }, 'Image url should be a link');
 
 publicationSchema.path('autheticCertif').validate(function () {
-    console.log(this.autheticCertif);
+    // console.log(this.autheticCertif);
     let answer = this.autheticCertif.toLowerCase();
     if (answer != 'yes' && answer != 'no'){
         return false;
