@@ -327,10 +327,4 @@
     * in User model -> set mongoose error messages
 
 
-sharing a publication
-User adding publication when created
-
-router.post('/details/:id/edit' NOT WORKING
-router guards to edit and delete
-
-DETAILS RENDERING VERY WRONG
+1:50left

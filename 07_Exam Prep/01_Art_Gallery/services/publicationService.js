@@ -5,7 +5,7 @@ const {SECRET} = require('../config/env');
 const { promisify } = require('util');
 const jwtVerify = promisify(jwt.verify);
 
-exports.createArt = (userData) => Publication.create(userData);
+exports.createArt = (artData) => Publication.create(artData);
 
 exports.getAll = async () => {
     let publications = await Publication
@@ -31,7 +31,7 @@ exports.userData = async (token) => {
 }
 
 // exports.edit = (publicationId, publicationData) => Publication.findByIdAndUpdate(publicationId, publicationData, {context: 'query', runValidators: true});
-
+// MAYBE BETTER => exports.edit = (publicationId, publicationData) => Publication.updateOne({_id: publicationId}, {$set: publicationData}, {runValidators: true})
 exports.edit = async function (publicationId, publicationData) {
     try {
     const modifiedPublication = await Publication.findByIdAndUpdate(publicationId, publicationData);

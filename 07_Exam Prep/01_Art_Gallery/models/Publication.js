@@ -20,7 +20,7 @@ const publicationSchema = new mongoose.Schema({
     autheticCertif: {
         type: String,
         required: [true, 'Certificate of authenticity field is required.'],
-        //add "yes", "no" option
+        // enum: ['Yes', 'No'],
     },
     author: {
         type: mongoose.Types.ObjectId,
