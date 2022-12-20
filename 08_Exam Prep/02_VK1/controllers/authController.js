@@ -1,12 +1,14 @@
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator');
+const {isUser, isGuest} = require('../middlewares/guards');
 
-router.get('/register', (req, res) => {
+router.get('/register', isGuest(), (req, res) => {
     res.render('register');
 });
 
 router.post(
     '/register',
+    isGuest(), 
     //CAN DO SIMPLE CHECK WITH IFs and regex
     body('username').isLength({min:3}).withMessage('Username must be at least 3 characters long'), //TO DO change length according to requirements
     body('rePassword').custom((value, {req}) => {
@@ -42,11 +44,11 @@ router.post(
     
 });
 
-router.get('/login', (req, res) => {
+router.get('/login', isGuest(), (req, res) => {
     res.render('login');
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', isGuest(), async (req, res) => {
     try {
         await req.auth.login(req.body.username, req.body.password);
         res.redirect('/'); //TO DO adapt redirect location
@@ -61,5 +63,11 @@ router.post('/login', async (req, res) => {
         res.render('login', ctx);
     }
 });
+
+//Route guard not obligatory here:
+router.get('/logout', async (req, res) => {
+    await req.auth.logout();
+    res.redirect('/');
+})
 
 module.exports = router;
