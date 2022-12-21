@@ -18,9 +18,9 @@ async function start() {
     routesConfig(app);
     
     //TO DO remove in prod
-    app.get('/', (req, res) => {
-        res.send('Hello!')
-    })
+    // app.get('/', (req, res) => {
+    //     res.send('Hello!')
+    // })
     
     app.listen(PORT, () => {
         // testAuth();
