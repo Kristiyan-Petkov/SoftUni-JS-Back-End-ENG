@@ -7,12 +7,12 @@ const userService = require('../services/user');
 module.exports = () => (req, res, next) => {
         if (parseToken(req, res)) {
             req.auth = {
-                async register(username, email, password) {
-                    const token = await register(username, email, password);
+                async register(username, password) {
+                    const token = await register(username, password);
                     res.cookie(COOKIE_NAME, token);
                 },
-                async login(email, password) {
-                    const token = await login1(email, password);
+                async login(username, password) {
+                    const token = await login1(username, password);
                     res.cookie(COOKIE_NAME, token);
                 },
                 logout() {
@@ -24,30 +24,23 @@ module.exports = () => (req, res, next) => {
         }
 };
 
-async function register(username, email, password) {
+async function register(username, password) {
+    //TO DO adapt parameters to project requirements
+    //TO DO extra validations on project level
+    const existing = await userService.getUserByUsername(username);
 
-    // console.log('auth middleware', username);
-    // console.log('auth middleware', email);
-    // console.log('auth middleware', password);
-    const existUsername = await userService.getUserByUsername(username);
-    const existEmail = await userService.getUserByEmail(email);
-
-    if (existUsername) {
+    if (existing) {
         throw new Error('Username is taken!')
-    } else if (existEmail){
-        throw new Error('Email is taken!')
     }
 
     const hashedPassword = await bcrypt.hash(password, 11);
-    const user = await userService.createUser(username, email, hashedPassword);
-    
+    const user = await userService.createUser(username, hashedPassword);
+
     return generateToken(user);
 }
 
-async function login1 (email, password) {
-    console.log("login1 email:", email);
-    const user = await userService.getUserByEmail(email);
-    console.log("login1 user:", user);
+async function login1 (username, password) {
+    const user = await userService.getUserByUsername(username);
 
     if (!user){
         throw new Error('No such user');
@@ -64,8 +57,7 @@ async function login1 (email, password) {
 function generateToken(userData){
     return jwt.sign({
         _id: userData._id,
-        username: userData.username,
-        email: userData.username
+        username: userData.username
     }, TOKEN_SECRET)
 }
 
@@ -75,7 +67,7 @@ function parseToken(req,res){
         try {
             const userData = jwt.verify(token, TOKEN_SECRET);
             req.user = userData;
-            res.locals.user = userData;
+
         } catch (err) {
             res.clearCookie(COOKIE_NAME);
             res.redirect('/auth/login');

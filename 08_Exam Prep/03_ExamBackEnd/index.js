@@ -28,26 +28,3 @@ async function start() {
     });
 }
 
-
-// async function testAuth() {
-//     const reqMock = {};
-//     const resMock = {
-//         cookie() {
-//             console.log('Set cookie', arguments);
-//         }
-//     };
-//     const nextMock = () => {};
-//     try {
-//         // const result = await userService.createUser('Maxime', '123123');
-//         // console.log(result);
-//         const auth = authMiddleware();
-//         auth(reqMock, resMock, nextMock);
-//         // await reqMock.auth.register('melun', '123azerty');
-//         await reqMock.auth.login('melun2', '123azerty');
-//         // const user = await userService.getUserByUsername('maxime');
-//         // console.log(user);
-//     } catch (err){
-//         console.log('Error: ', err.message);
-//     }
-// }
-
