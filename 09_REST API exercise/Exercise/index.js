@@ -51,9 +51,21 @@ app.put('/services/:id', (req, res) => {
 
     const item = req.body;
     item.id = id
-    
+
     if (index != -1) {
         data.splice(index, 1, req.body);
+        res.json(req.body);
+    } else {
+        res.status(404).json({ error: 'Not found' })
+    }
+});
+
+app.delete('/services/:id', (req, res) => {
+    const id = req.params.id;
+    const index = data.findIndex(i => i.id == id);
+    
+    if (index != -1) {
+        data.splice(index, 1);
         res.json(req.body);
     } else {
         res.status(404).json({ error: 'Not found' })
